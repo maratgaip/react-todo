@@ -1,0 +1,54 @@
+.App {
+  padding: 10px;
+}
+
+.task {
+  padding: 10px;
+}
+
+div {
+  margin-bottom: 10px;
+}
+
+button:hover {
+  transition: 0.25s ease-in-out;
+  color: black;
+  opacity: 50%;
+}
+
+button {
+  margin-left: 10px;
+  font-size: 20px;
+  color: ivory;
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.error {
+  color: red;
+}
+
+
+.delBtn {
+  background-color: red;
+  border: none;
+}
+
+.greyBtn {
+  background-color: grey;
+}
+
+.blueBtn {
+  background-color: rgb(131, 199, 255);
+}
+
+input {
+  padding:15px;
+  font-size: 20px;
+  margin: 10px;
+}
+
+span {
+  font-size: 20px;
+  margin: 10px;
+}
