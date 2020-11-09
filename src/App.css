@@ -100,6 +100,20 @@ span {
   margin: 10px;
 }
 
+.todoItem {
+  margin-left: 20px;
+  width: 100%;
+  display: block;
+  text-align: left;
+}
+
+.taskNumber {
+  margin-left: 10px;
+  display: inline-block;
+  width: 5px;
+
+}
+
 .done-todos {
   color: gray;
 }

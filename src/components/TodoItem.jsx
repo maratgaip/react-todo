@@ -4,7 +4,7 @@ class TodoItem extends React.Component {
     render() {
         const { task, index, className } = this.props
         return (
-            <div className={className}>
+            <div className="todoItem">
                 <span className="taskNumber">{index}</span>
                 <span className="task">{task}</span>
             </div>
