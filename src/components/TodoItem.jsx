@@ -1,10 +1,10 @@
-import React from 'react' 
+import React from 'react'
 
 class TodoItem extends React.Component {
     render() {
-        const {task, index} = this.props
+        const { task, index, className } = this.props
         return (
-            <div>
+            <div className={className}>
                 <span className="taskNumber">{index}</span>
                 <span className="task">{task}</span>
             </div>

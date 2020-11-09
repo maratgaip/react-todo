@@ -6,13 +6,12 @@ class Actions extends React.Component {
 
         const { id, handleDone, handleDelete, handleEdit } = this.props;
         return (
-            <div id={id}>
+            <div id={`${id}-div`}>
                 <Link to={`/${id}`}>
-                    <button className="blueBtn" name={`${id}-edit`} onClick={handleEdit}>Edit</button>
+                    <button className="blueBtn" name={`${id}-edit`} onClick={(e) => handleEdit(e)}>Edit</button>
                 </Link>
-
                 <button className="greyBtn" name={`${id}-done`} onClick={handleDone}>Done</button>
-                <button className="delBtn" name={`${id}-delete`} onClick={handleDelete}>Delete</button>
+                <button className="delBtn" name={`${id}-delete`} onClick={() => handleDelete(id)}>Delete</button>
             </div>
         )
     }

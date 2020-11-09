@@ -4,15 +4,18 @@ import Actions from '../components/Actions'
 
 class TodoList extends React.Component {
 
-    constructor() {
+    constructor(props) {
         super()
         this.state = {
+            id: props.data.id
         }
     }
 
-
+    handleDelete = (id) => {
+        this.props.handleDelete(id)
+    }
     render() {
-        const { data, selectedTab, handleEdit, handleDone, handleDelete } = this.props;
+        const { data, selectedTab, handleEdit, handleDone } = this.props;
         let selectedTodos;
 
         if (selectedTab === 'active-todos') {
@@ -23,7 +26,7 @@ class TodoList extends React.Component {
                 }
             )
         } else {
-            if (selectedTab ==='done-todos') {
+            if (selectedTab === 'done-todos') {
                 selectedTodos = data.filter(
                     (todo) => {
                         return todo.completed;
@@ -33,19 +36,19 @@ class TodoList extends React.Component {
         }
 
         const renderedTodos = selectedTodos.map(
-            (todo, index) => { 
+            (todo, index) => {
                 return (
-                <div key={`todoDiv-${todo.id}`}>
-                    <TodoItem key={todo.id} task={todo.task} index={index+1}/>
-                    <Actions
-                        key={`actions-${todo.id}`}
-                        handleDelete={handleDelete}
-                        handleEdit={handleEdit}
-                        handleDone={handleDone}
-                        id={todo.id}
-                    />
+                    <div key={`todoDiv-${todo.id}`} className="todoList">
+                        <TodoItem className={String(selectedTab)} key={todo.id} task={todo.task} index={index + 1} />
+                        <Actions
+                            key={`actions-${todo.id}`}
+                            handleDelete={this.handleDelete}
+                            handleEdit={handleEdit}
+                            handleDone={handleDone}
+                            id={todo.id}
+                        />
 
-                </div> )
+                    </div>)
             }
         )
 
@@ -53,7 +56,7 @@ class TodoList extends React.Component {
             <div>
                 {renderedTodos}
             </div>
-            
+
         )
 
     }

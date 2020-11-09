@@ -1,13 +1,20 @@
 import React from 'react'
 import { Link, withRouter } from 'react-router-dom'
+import { TextField } from '@material-ui/core'
 
 class TodoEditUI extends React.Component {
 
     constructor(props) {
         super()
-        const index = Number(props.match.params.id) - 1;
+        const index = props.data.findIndex(
+            item => {
+                return item.id == props.match.params.id
+            }
+        );
+
+
         this.state = {
-            id: index,
+            id: Number(props.match.params.id),
             task: props.data[index].task,
             origTask: props.data[index].task,
             linkto: "/"
@@ -15,7 +22,6 @@ class TodoEditUI extends React.Component {
     }
 
     handleChange = (e) => {
-        this.state.task = e.target.value;
         const task = e.target.value
         this.setState(
             {
@@ -39,20 +45,27 @@ class TodoEditUI extends React.Component {
 
     render() {
 
+
         return (
-            <div>
+            <div className="editTodo">
                 <Link to={this.state.linkto}>
-                    <button className="greyBtn">Back</button>
+                    <button className="greyBtn" id="back-btn">Back</button>
                 </Link>
                 <br />
-                <input type="text" value={this.state.task} onChange={this.handleChange} />
+                <div className="editTaskUI">
+                    <TextField id="outlined-basic" onChange={this.handleChange} label="Edit your task" variant="outlined" value={this.state.task} />
+
+                </div>
+
+                {/* <input type="text" value={this.state.task} onChange={this.handleChange} /> */}
                 <br />
                 <Link to={this.state.linkto}>
                     <button className="blueBtn" onClick={this.handleSave}>Save</button>
+
+                    <button className="greyBtn" onClick={this.handleCancel}>Cancel</button>
                 </Link>
-                <button className="greyBtn" onClick={this.handleCancel}>Cancel</button>
                 <Link to="/">
-                    <button className="delBtn" name={`${this.state.id + 1}-delBtn`} onClick={this.props.handleDelete}>Delete</button>
+                    <button className="delBtn" name={`${this.state.id + 1}-delBtn`} onClick={() => this.props.handleDelete(this.state.id + 1)}>Delete</button>
                 </Link>
 
             </div>

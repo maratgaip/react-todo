@@ -4,10 +4,16 @@ import todosData from './todosData'
 import TodoList from './components/TodoList'
 import TodoEditUI from './components/TodoEditUI'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { TextField } from '@material-ui/core'
+
+
+function isEmpty(str) {
+  return str.length === 0;
+}
 
 class App extends React.Component {
-
   constructor() {
+    const newIdValue = todosData.length + 1;
     super()
     this.state = {
       currentTodo: '',
@@ -18,26 +24,25 @@ class App extends React.Component {
       editingId: -1,
       doneTodos: 0,
       activeTodos: 0,
-      newId: todosData.length
+      newId: newIdValue
     }
   }
 
+
+  //switching between Tabs
   goToActiveTodos = () => {
     this.setState({
       selectedTab: 'active-todos'
     })
-
   }
 
   goToDoneTodos = () => {
     this.setState({
       selectedTab: 'done-todos'
     })
-
   }
 
   handleChangeTodoInput = (e) => {
-    this.state.currentTodo = e.target.value;
     const currentTodo = e.target.value
     this.setState(
       {
@@ -47,96 +52,84 @@ class App extends React.Component {
   }
 
 
-  handleAdd = () => {
-    const { todosData, currentTodo } = this.state;
-    if (currentTodo.length < 1) {
-      this.setState(
-        {
-          showError: true,
-          errorMsg: 'Cannot add an empty task'
-        }
-      )
-
-      console.log(this.state.errorMsg);
-
-      return;
-    }
-    
-    else if (todosData.findIndex(
-      item => {
-        return item !== undefined && item.task.toLowerCase().split(" ").join("") === currentTodo.toLowerCase().split(" ").join("") 
-        //won't add 'some task' sometask som e ta sk if already exists
-      }
-    ) > -1) {
-      this.setState(
-        {
-          showError: true,
-          errorMsg: 'Cannot add a duplicate',
-          currentTodo: ''
-        }
-      )
-      return;
-
-    }
-    else {
-      this.setState(
-        {
-          showError: false
-        }
-      )
-    }
-    const newId = Number(this.state.newId);
-    this.setState (
-      {
-        newId: this.state.newId+1
-      }
-    )
-    todosData.push({
-      id: newId,
-      task: currentTodo,
-      completed: false
-    })
+  showError = errorMsgStr => {
     this.setState(
       {
-        todosData,
+        showError: true,
+        errorMsg: errorMsgStr,
         currentTodo: ''
       }
     )
   }
 
-  handleDone = (e) => {
-    let id = e.target.name;
-    id = parseInt(id) - 1;
-    const { todosData } = this.state;
-    console.log('id',id)
-    if(todosData[id]) {
-      todosData[id].completed = true;
+  doesTaskExist = (taskName) => {
+    const index = this.state.todosData.findIndex(
+      item => {
+        return item !== undefined && item.task.toLowerCase().split(" ").join("") === taskName.toLowerCase().split(" ").join("")
+      }
+    )
+
+    return index > -1 ? true : false
+  }
+
+  handleAdd = () => {
+    const { todosData, currentTodo } = this.state;
+    if (isEmpty(currentTodo)) {
+      this.showError('Cannot add an empty task')
+      return;
+    } else if (this.doesTaskExist(currentTodo)) {
+      this.showError('Cannot add a duplicate task')
+      return;
+    } else {
+      //add a task to todosData
+      const newIdValue = Number(this.state.newId);
+      todosData.push({
+        id: newIdValue,
+        task: currentTodo,
+        completed: false,
+      })
+      this.setState(
+        {
+          showError: false,
+          todosData,
+          currentTodo: '',
+          newId: this.state.newId + 1,
+          selectedTab: 'active-todos'
+        }
+      )
     }
-    
-    this.setState(
-      {
-        todosData
-      }
-    )
   }
 
-  handleDelete = (e) => {
-    let id = e.target.name;
-    id = parseInt(id) - 1;
-    const { todosData } = this.state;
-    delete todosData[id]
-    this.setState(
-      {
-        todosData
-      }
-    )
+  handleDone = (e) => {
+    const { todosData } = this.state
+    let index = parseInt(e.target.name);
+    index = todosData.findIndex(item => {
+      return item.id === index
+    })
+    todosData[index].completed = true;
+    this.setState({
+      todosData
+    })
+
+
+
 
   }
+
+  handleDelete = (id) => {
+    const todosData = this.state.todosData.filter(item => item.id !== id)
+    this.setState({ todosData })
+  }
+
+  handleEdit = (e) => {
+  }
+
 
   handleSave = (id, editedTask) => {
-    const {todosData} = this.state
-    todosData[id].task = editedTask;
-    this.setState (
+    const { todosData } = this.state
+    let index = todosData.findIndex(item => item.id === id)
+    todosData[index].task = editedTask;
+    this.setState(
       {
         todosData
       }
@@ -146,38 +139,44 @@ class App extends React.Component {
   render() {
     return (
       <Router>
-
+        <h1 className="App">Todo App</h1>
         <Switch>
-          <Route path="/" exact >
+          <Route path="/" exact>
             <div className="App">
+              <nav>
+                <TextField id="outlined-basic" onChange={this.handleChangeTodoInput} label="Add todo" variant="outlined" value={this.state.currentTodo} />
+                {/* <input type="text" onChange={this.handleChangeTodoInput} placeholder="Add todo" value={this.state.currentTodo} /> */}
+                <button className="blueBtn" id="addBtnNav" onClick={this.handleAdd}>Add Todo</button>
+              </nav>
 
-              <input type="text" onChange={this.handleChangeTodoInput} placeholder="Add todo" value={this.state.currentTodo} />
-              <button className="blueBtn" onClick={this.handleAdd}>Add Todo</button>
               <h4 className="error">{this.state.showError && this.state.errorMsg}</h4>
+              <main>
+                <div className="todosBreakdown">
+                  <button className="blueBtn" onClick={this.goToActiveTodos}>Active Todos</button>
+                  <button className="greyBtn" onClick={this.goToDoneTodos}>Done Todos</button>
+                </div>
 
-              <div className="todosBreakdown">
-                <button className="blueBtn" onClick={this.goToActiveTodos}>Active Todos</button>
-                <button className="greyBtn" onClick={this.goToDoneTodos}>Done Todos</button>
-              </div>
-
-              <TodoList
-                data={this.state.todosData}
-                selectedTab={this.state.selectedTab}
-                handleEdit={this.handleEdit}
-                handleDone={this.handleDone}
-                handleDelete={this.handleDelete}
-              />
+                <TodoList
+                  data={this.state.todosData}
+                  selectedTab={this.state.selectedTab}
+                  handleEdit={this.handleEdit}
+                  handleDone={this.handleDone}
+                  handleDelete={this.handleDelete}
+                />
+              </main>
             </div>
           </Route>
 
           <Route path="/:id">
-          <TodoEditUI 
-                        data={this.state.todosData}
-                        handleChange={this.handleChangeExisting}
-                        handleSave={this.handleSave}
-                        handleDelete={this.handleDelete}
-          />
+            <TodoEditUI
+              data={this.state.todosData}
+              handleChange={this.handleChangeExisting}
+              handleSave={this.handleSave}
+              handleDelete={this.handleDelete}
+            />
           </Route>
+
+
         </Switch>
       </Router>
     )

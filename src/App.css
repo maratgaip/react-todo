@@ -1,5 +1,33 @@
 .App {
   padding: 10px;
+  text-align: center;
+  
+}
+
+.editTodo {
+  width: 400px;
+  margin: auto;
+  padding: 20px;
+  border: solid 2px black;
+}
+main, nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 400px;
+  margin: auto;
+  padding: 20px;
+  
+}
+
+main, .editTodo {
+  background-color: rgb(238, 237, 237);
+  border: solid 2px black;
+}
+
+nav {
+  background-color: rgb(62, 68, 71);
+  border: solid 2px ivory;
 }
 
 .task {
@@ -13,7 +41,7 @@ div {
 button:hover {
   transition: 0.25s ease-in-out;
   color: black;
-  opacity: 50%;
+  background-color: rgb(242, 250, 253);
 }
 
 button {
@@ -22,33 +50,82 @@ button {
   color: ivory;
   border-radius: 5px;
   padding: 15px;
+  font-weight: bold;
+}
+
+#addBtnNav {
+  padding: 20px 0px;
+  margin: 0px;
 }
 
 .error {
-  color: red;
+  color: rgb(204, 88, 88);
+  animation: fadeout 3s infinite;
 }
 
+@keyframes fadein {
+  from { opacity: 1; }
+  to   { opacity: 0.4; }
+}
+
+@keyframes fadeout {
+  0%   {opacity:1;}
+  50%  {opacity:0.5;}
+  100% {opacity:1;}
+}
 
 .delBtn {
-  background-color: red;
-  border: none;
+  background-color: #E54B4B;
+  color: #FFFFFF;
 }
 
 .greyBtn {
-  background-color: grey;
+  background-color: #EAEAEA;
+  color: #536670;
 }
 
 .blueBtn {
-  background-color: rgb(131, 199, 255);
+  background-color: #19AAD1;
+  color: #f7eacb;
 }
 
 input {
-  padding:15px;
+  /* padding:15px;
   font-size: 20px;
-  margin: 10px;
+  margin: 10px; */
 }
 
 span {
   font-size: 20px;
   margin: 10px;
+}
+
+.done-todos {
+  color: gray;
+}
+
+#outlined-basic {
+  background-color: white;
+  font-size: 20px;
+}
+
+.todosBreakdown {
+  
+}
+
+.editTaskUI {
+  margin: 10px;
+}
+
+.editTodo {
+  text-align: center;
+}
+
+#back-btn {
+  position: relative;
+  right: 100px;
+}
+
+.todoList {
+  
 }
