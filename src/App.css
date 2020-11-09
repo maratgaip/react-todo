@@ -60,7 +60,7 @@ button {
 
 .error {
   color: rgb(204, 88, 88);
-  animation: fadeout 3s infinite;
+  animation: fadeout 2s infinite;
 }
 
 @keyframes fadein {

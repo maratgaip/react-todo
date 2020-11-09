@@ -11,23 +11,17 @@ class TodoEditUI extends React.Component {
                 return item.id == props.match.params.id
             }
         );
-
-
         this.state = {
             id: Number(props.match.params.id),
-            task: props.data[index].task,
-            origTask: props.data[index].task,
+            task: props.data[index] ? props.data[index].task : null,
+            origTask: props.data[index] ? props.data[index].task: null,
             linkto: "/"
         }
     }
 
     handleChange = (e) => {
         const task = e.target.value
-        this.setState(
-            {
-                task
-            }
-        )
+        this.setState({task})
     }
 
     handleSave = () => {
@@ -36,11 +30,7 @@ class TodoEditUI extends React.Component {
 
     handleCancel = () => {
         const task = this.state.origTask;
-        this.setState(
-            {
-                task
-            }
-        )
+        this.setState({task})
     }
 
     render() {
@@ -54,20 +44,13 @@ class TodoEditUI extends React.Component {
                 <br />
                 <div className="editTaskUI">
                     <TextField id="outlined-basic" onChange={this.handleChange} label="Edit your task" variant="outlined" value={this.state.task} />
-
                 </div>
-
-                {/* <input type="text" value={this.state.task} onChange={this.handleChange} /> */}
                 <br />
                 <Link to={this.state.linkto}>
                     <button className="blueBtn" onClick={this.handleSave}>Save</button>
-
                     <button className="greyBtn" onClick={this.handleCancel}>Cancel</button>
-                </Link>
-                <Link to="/">
                     <button className="delBtn" name={`${this.state.id + 1}-delBtn`} onClick={() => this.props.handleDelete(this.state.id + 1)}>Delete</button>
                 </Link>
-
             </div>
         )
     }

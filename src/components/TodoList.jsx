@@ -43,7 +43,6 @@ class TodoList extends React.Component {
                         <Actions
                             key={`actions-${todo.id}`}
                             handleDelete={this.handleDelete}
-                            handleEdit={handleEdit}
                             handleDone={handleDone}
                             id={todo.id}
                         />

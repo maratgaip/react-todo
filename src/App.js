@@ -1,11 +1,10 @@
 import React from 'react'
-import './App.css';
 import todosData from './todosData'
 import TodoList from './components/TodoList'
 import TodoEditUI from './components/TodoEditUI'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { TextField } from '@material-ui/core'
-
+import './App.css';
 
 function isEmpty(str) {
   return str.length === 0;
@@ -31,24 +30,16 @@ class App extends React.Component {
 
   //switching between Tabs
   goToActiveTodos = () => {
-    this.setState({
-      selectedTab: 'active-todos'
-    })
+    this.setState({selectedTab: 'active-todos'})
   }
 
   goToDoneTodos = () => {
-    this.setState({
-      selectedTab: 'done-todos'
-    })
+    this.setState({selectedTab: 'done-todos'})
   }
 
   handleChangeTodoInput = (e) => {
     const currentTodo = e.target.value
-    this.setState(
-      {
-        currentTodo
-      }
-    )
+    this.setState({currentTodo})
   }
 
 
@@ -65,10 +56,11 @@ class App extends React.Component {
   doesTaskExist = (taskName) => {
     const index = this.state.todosData.findIndex(
       item => {
-        return item !== undefined && item.task.toLowerCase().split(" ").join("") === taskName.toLowerCase().split(" ").join("")
+        return item !== undefined 
+            && item.task.toLowerCase().split(" ").join("") 
+            === taskName.toLowerCase().split(" ").join("")
       }
     )
-
     return index > -1 ? true : false
   }
 
@@ -94,9 +86,9 @@ class App extends React.Component {
           todosData,
           currentTodo: '',
           newId: this.state.newId + 1,
-          selectedTab: 'active-todos'
         }
       )
+      this.goToActiveTodos();
     }
   }
 
@@ -107,32 +99,20 @@ class App extends React.Component {
       return item.id === index
     })
     todosData[index].completed = true;
-    this.setState({
-      todosData
-    })
-
-
-
-
+    this.setState({todosData})
   }
 
   handleDelete = (id) => {
     const todosData = this.state.todosData.filter(item => item.id !== id)
-    this.setState({ todosData })
+    this.setState({todosData})
   }
-
-  handleEdit = (e) => {
-  }
-
 
   handleSave = (id, editedTask) => {
     const { todosData } = this.state
     let index = todosData.findIndex(item => item.id === id)
     todosData[index].task = editedTask;
     this.setState(
-      {
-        todosData
-      }
+      {todosData}
     )
   }
 
@@ -143,19 +123,19 @@ class App extends React.Component {
         <Switch>
           <Route path="/" exact>
             <div className="App">
+
               <nav>
                 <TextField id="outlined-basic" onChange={this.handleChangeTodoInput} label="Add todo" variant="outlined" value={this.state.currentTodo} />
-                {/* <input type="text" onChange={this.handleChangeTodoInput} placeholder="Add todo" value={this.state.currentTodo} /> */}
                 <button className="blueBtn" id="addBtnNav" onClick={this.handleAdd}>Add Todo</button>
               </nav>
 
               <h4 className="error">{this.state.showError && this.state.errorMsg}</h4>
+
               <main>
                 <div className="todosBreakdown">
                   <button className="blueBtn" onClick={this.goToActiveTodos}>Active Todos</button>
                   <button className="greyBtn" onClick={this.goToDoneTodos}>Done Todos</button>
                 </div>
-
                 <TodoList
                   data={this.state.todosData}
                   selectedTab={this.state.selectedTab}
@@ -164,10 +144,10 @@ class App extends React.Component {
                   handleDelete={this.handleDelete}
                 />
               </main>
+
             </div>
           </Route>
-
-          <Route path="/:id">
+          <Route path="/:id" exact>
             <TodoEditUI
               data={this.state.todosData}
               handleChange={this.handleChangeExisting}
@@ -175,8 +155,6 @@ class App extends React.Component {
               handleDelete={this.handleDelete}
             />
           </Route>
-
-
         </Switch>
       </Router>
     )
